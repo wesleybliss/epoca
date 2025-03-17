@@ -1,7 +1,6 @@
 'use client'
 
 import type React from 'react'
-
 import { useEffect, useState } from 'react'
 import type { Task } from '@/components/kanban-board'
 import { Badge } from '@/components/ui/badge'
@@ -15,11 +14,12 @@ import { GripHorizontal } from 'lucide-react'
 import cn from 'classnames'
 
 interface GanttChartProps {
-  tasks: Task[]
-  setTasks?: React.Dispatch<React.SetStateAction<Task[]>>
+    tasks: Task[]
+    setTasks?: React.Dispatch<React.SetStateAction<Task[]>>
 }
 
-export function GanttChart({ tasks, setTasks }: GanttChartProps) {
+const GanttChart = ({ tasks, setTasks }: GanttChartProps) => {
+    
     const [isEditTaskOpen, setIsEditTaskOpen] = useState(false)
     const [editedTask, setEditedTask] = useState<Task | null>(null)
     const [draggedTask, setDraggedTask] = useState<string | null>(null)
@@ -30,8 +30,6 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
     const [resizeStartX, setResizeStartX] = useState(0)
     const [isDragging, setIsDragging] = useState(false)
     const [isResizing, setIsResizing] = useState(false)
-    const [handleDragMove, setHandleDragMove] = useState<((e: MouseEvent) => void) | null>(null)
-    const [handleResizeMove, setHandleResizeMove] = useState<((e: MouseEvent) => void) | null>(null)
     
     // Sort tasks by start date
     const sortedTasks = [...tasks].sort((a, b) => {
@@ -42,14 +40,6 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
     
     // Filter out tasks without dates
     const tasksWithDates = sortedTasks.filter(task => task.startDate && task.dueDate)
-    
-    if (tasksWithDates.length === 0) {
-        return (
-            <div className="flex items-center justify-center h-full">
-                <p className="text-muted-foreground">No tasks with dates to display</p>
-            </div>
-        )
-    }
     
     // Find the earliest and latest dates
     const earliestDate = new Date(Math.min(...tasksWithDates.map(task => new Date(task.startDate!).getTime())))
@@ -82,6 +72,7 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
     
     // Handle drag end
     useEffect(() => {
+        
         const handleMouseUp = () => {
             if (isDragging || isResizing) {
                 setIsDragging(false)
@@ -93,11 +84,14 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
             }
         }
         
+        // eslint-disable-next-line no-restricted-globals
         document.addEventListener('mouseup', handleMouseUp)
         
         return () => {
+            // eslint-disable-next-line no-restricted-globals
             document.removeEventListener('mouseup', handleMouseUp)
         }
+        
     }, [isDragging, isResizing])
     
     const updateTask = () => {
@@ -171,9 +165,12 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
             }
             
             setHandleDragMove(() => newHandleDragMove)
+            
+            // eslint-disable-next-line no-restricted-globals
             document.addEventListener('mousemove', newHandleDragMove)
             
             return () => {
+                // eslint-disable-next-line no-restricted-globals
                 document.removeEventListener('mousemove', newHandleDragMove)
                 setHandleDragMove(null)
             }
@@ -226,14 +223,20 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
                 }
                 
                 setTasks(prev =>
-                    prev.map(t => (t.id === resizingTask ? { ...t, dueDate: newEndDate.toISOString().split('T')[0] } : t)),
+                    prev.map(t => (t.id === resizingTask ? {
+                        ...t,
+                        dueDate: newEndDate.toISOString().split('T')[0],
+                    } : t)),
                 )
             }
             
             setHandleResizeMove(() => newHandleResizeMove)
+            
+            // eslint-disable-next-line no-restricted-globals
             document.addEventListener('mousemove', newHandleResizeMove)
             
             return () => {
+                // eslint-disable-next-line no-restricted-globals
                 document.removeEventListener('mousemove', newHandleResizeMove)
                 setHandleResizeMove(null)
             }
@@ -244,14 +247,22 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
         }
     }, [resizingTask, resizeStartX, originalEndDate, tasks, setTasks])
     
+    if (tasksWithDates.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <p className="text-muted-foreground">No tasks with dates to display</p>
+            </div>
+        )
+    }
+    
     return (
         <div className="relative">
             {/* Header with dates */}
-            <div className="flex border-b sticky top-0 bg-background z-10">
-                <div className="w-64 shrink-0 p-2 font-medium">Task</div>
-                <div className="flex-1 flex">
+            <div className="flex sticky top-0 z-10 border-b bg-background">
+                <div className="p-2 w-64 font-medium shrink-0">Task</div>
+                <div className="flex flex-1">
                     {dates.map((date, index) => (
-                        <div key={index} className="w-12 shrink-0 text-center text-xs p-2 border-l">
+                        <div key={index} className="p-2 w-12 text-xs text-center border-l shrink-0">
                             {date.getDate()}
                             <div className="text-[10px] text-muted-foreground">
                                 {date.toLocaleString('default', { month: 'short' })}
@@ -268,7 +279,8 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
                     const startDate = new Date(task.startDate!)
                     const endDate = new Date(task.dueDate!)
                     
-                    const startDayIndex = Math.floor((startDate.getTime() - earliestDate.getTime()) / (1000 * 60 * 60 * 24))
+                    const startEarliestDiff = startDate.getTime() - earliestDate.getTime()
+                    const startDayIndex = Math.floor(startEarliestDiff / (1000 * 60 * 60 * 24))
                     const duration = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
                     
                     const isBeingDragged = draggedTask === task.id
@@ -276,7 +288,7 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
                     
                     return (
                         <div key={task.id} className="flex border-b">
-                            <div className="w-64 shrink-0 p-2 flex items-center">
+                            <div className="flex items-center p-2 w-64 shrink-0">
                                 <div>
                                     <div className="font-medium">{task.title}</div>
                                     <Badge className={priorityColors[task.priority]}>
@@ -284,16 +296,18 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
                                     </Badge>
                                 </div>
                             </div>
-                            <div className="flex-1 flex relative">
+                            <div className="flex relative flex-1">
                                 {dates.map((_, index) => (
-                                    <div key={index} className="w-12 shrink-0 border-l h-16"></div>
+                                    <div key={index} className="w-12 h-16 border-l shrink-0"></div>
                                 ))}
                                 <div
-                                    className={cn('absolute top-2 h-12 rounded-md select-none transition-colors duration-150', {
-                                        'bg-blue-100 border-2 border-blue-500 shadow-lg z-10': isBeingDragged,
-                                        'bg-green-100 border-2 border-green-500 shadow-lg z-10': isBeingResized,
-                                        'bg-primary/20 border-2 border-primary hover:bg-primary/30': !isBeingDragged && !isBeingResized,
-                                    })}
+                                    className={cn(
+                                        'absolute top-2 h-12 rounded-md select-none transition-colors duration-150', {
+                                            'bg-blue-100 border-2 border-blue-500 shadow-lg z-10': isBeingDragged,
+                                            'bg-green-100 border-2 border-green-500 shadow-lg z-10': isBeingResized,
+                                            'bg-primary/20 border-2 border-primary hover:bg-primary/30':
+                                                !isBeingDragged && !isBeingResized,
+                                        })}
                                     style={{
                                         left: `${startDayIndex * 48}px`,
                                         width: `${duration * 48 - 8}px`,
@@ -306,15 +320,18 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
                                             'cursor-pointer': !isDragging && !isResizing,
                                         })}
                                         onMouseDown={e => handleDragStart(e, task.id)}>
-                                        <GripHorizontal className="h-4 w-4 text-muted-foreground mr-1" />
+                                        <GripHorizontal className="mr-1 w-4 h-4 text-muted-foreground" />
                                         <span className="text-xs font-medium truncate">{task.title}</span>
                                     </div>
                                     
                                     {/* Resize handle */}
                                     <div
-                                        className="absolute right-0 top-0 bottom-0 w-6 cursor-ew-resize flex items-center justify-center"
+                                        className={cn(
+                                            'flex absolute top-0 right-0 bottom-0',
+                                            'justify-center items-center w-6 cursor-ew-resize',
+                                        )}
                                         onMouseDown={e => handleResizeStart(e, task.id)}>
-                                        <div className="h-8 w-1 rounded-full bg-muted-foreground/30"></div>
+                                        <div className="w-1 h-8 rounded-full bg-muted-foreground/30"></div>
                                     </div>
                                 </div>
                             </div>
@@ -394,3 +411,4 @@ export function GanttChart({ tasks, setTasks }: GanttChartProps) {
     )
 }
 
+export default GanttChart

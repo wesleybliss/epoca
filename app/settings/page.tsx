@@ -10,28 +10,33 @@ import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-export default function SettingsPage() {
+const SettingsPage = () => {
     
     const {
         theme,
         setTheme,
-        language,
+        /* language,
         setLanguage,
         notificationsEnabled,
         toggleNotifications,
         soundEnabled,
-        toggleSound,
+        toggleSound, */
     } = useSettingsStore()
     
     return (
+        
         <div className="flex h-screen bg-background">
+            
             <Sidebar />
-            <main className="flex-1 overflow-auto p-4">
-                <div className="h-full flex flex-col">
-                    <h1 className="text-2xl font-bold mb-6">Settings</h1>
+            
+            <main className="overflow-auto flex-1 p-4">
+                
+                <div className="flex flex-col h-full">
+                    
+                    <h1 className="mb-6 text-2xl font-bold">Settings</h1>
                     
                     <Tabs defaultValue="account" className="w-full max-w-3xl">
-                        <TabsList className="grid w-full grid-cols-3">
+                        <TabsList className="grid grid-cols-3 w-full">
                             <TabsTrigger value="account">Account</TabsTrigger>
                             <TabsTrigger value="appearance">Appearance</TabsTrigger>
                             <TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -66,7 +71,7 @@ export default function SettingsPage() {
                                     <CardDescription>Customize the appearance of the application.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center">
                                         <Label htmlFor="theme-select">Theme</Label>
                                         <Select value={theme} onValueChange={setTheme}>
                                             <SelectTrigger className="w-[180px]">
@@ -79,7 +84,7 @@ export default function SettingsPage() {
                                             </SelectContent>
                                         </Select>
                                     </div>
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center">
                                         <Label htmlFor="compact-view">Compact view</Label>
                                         <Switch id="compact-view" />
                                     </div>
@@ -97,15 +102,15 @@ export default function SettingsPage() {
                                     <CardDescription>Configure how you receive notifications.</CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center">
                                         <Label htmlFor="email-notifications">Email notifications</Label>
                                         <Switch id="email-notifications" defaultChecked />
                                     </div>
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center">
                                         <Label htmlFor="push-notifications">Push notifications</Label>
                                         <Switch id="push-notifications" />
                                     </div>
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between items-center">
                                         <Label htmlFor="task-reminders">Task reminders</Label>
                                         <Switch id="task-reminders" defaultChecked />
                                     </div>
@@ -122,3 +127,4 @@ export default function SettingsPage() {
     )
 }
 
+export default SettingsPage
