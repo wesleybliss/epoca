@@ -1,0 +1,19 @@
+module.exports = {
+    extends: [
+        'next/zcore-web-vitals',
+        'plugin:@typescript-eslint/recommended',
+    ],
+    parser: '@typescript-eslint/parser',
+    plugins: ['@typescript-eslint'],
+    root: true,
+    rules: {
+        '@typescript-eslint/no-unused-vars': ['warn'],
+        '@typescript-eslint/no-explicit-any': ['warn'],
+        'react/prop-types': 'off',
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
+}
