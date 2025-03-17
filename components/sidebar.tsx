@@ -3,11 +3,13 @@ import { Calendar, LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import cn from 'classnames'
 
-export function Sidebar() {
+const Sidebar = () => {
+    
     return (
+        
         <aside className="flex flex-col w-64 h-screen border-r bg-card border-border">
             <div className="p-4 border-b border-border">
-                <h1 className="text-xl font-bold">Kanban</h1>
+                <h1 className="text-xl font-bold">Epoca</h1>
             </div>
             
             <nav className="flex-1 p-4 space-y-2">
@@ -54,4 +56,7 @@ export function Sidebar() {
             </div>
         </aside>
     )
+    
 }
+
+export default Sidebar

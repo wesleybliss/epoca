@@ -1,7 +1,6 @@
 'use client'
 
 import type React from 'react'
-
 import { useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -30,7 +29,7 @@ export function KanbanColumn({ column, setColumns }: KanbanColumnProps) {
         priority: 'medium',
     })
     
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    const { /* attributes, listeners, */ setNodeRef, transform, transition } = useSortable({
         id: column.id,
         data: {
             type: 'column',
@@ -72,24 +71,24 @@ export function KanbanColumn({ column, setColumns }: KanbanColumnProps) {
     
     return (
         <Card ref={setNodeRef} style={style} className="flex flex-col w-72 h-full shrink-0">
-            <CardHeader className="p-4 flex flex-row items-center justify-between space-y-0">
-                <CardTitle className="text-md font-medium">{column.title}</CardTitle>
+            <CardHeader className="flex flex-row justify-between items-center p-4 space-y-0">
+                <CardTitle className="font-medium text-md">{column.title}</CardTitle>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="w-8 h-8">
+                            <MoreHorizontal className="w-4 h-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={deleteColumn} className="text-destructive">
-                            <Trash className="mr-2 h-4 w-4" />
+                            <Trash className="mr-2 w-4 h-4" />
               Delete Column
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
             
-            <CardContent className="flex-1 overflow-y-auto p-2 space-y-2">
+            <CardContent className="overflow-y-auto flex-1 p-2 space-y-2">
                 {column.tasks.map(task => (
                     <KanbanTask key={task.id} task={task} setColumns={setColumns} />
                 ))}
@@ -98,8 +97,8 @@ export function KanbanColumn({ column, setColumns }: KanbanColumnProps) {
             <div className="p-2 border-t border-border">
                 <Dialog open={isAddTaskOpen} onOpenChange={setIsAddTaskOpen}>
                     <DialogTrigger asChild>
-                        <Button variant="ghost" className="w-full justify-start">
-                            <Plus className="mr-2 h-4 w-4" />
+                        <Button variant="ghost" className="justify-start w-full">
+                            <Plus className="mr-2 w-4 h-4" />
               Add Task
                         </Button>
                     </DialogTrigger>
@@ -128,7 +127,10 @@ export function KanbanColumn({ column, setColumns }: KanbanColumnProps) {
                                 <Label htmlFor="task-priority">Priority</Label>
                                 <Select
                                     value={newTask.priority}
-                                    onValueChange={value => setNewTask({ ...newTask, priority: value as 'low' | 'medium' | 'high' })}>
+                                    onValueChange={value => setNewTask({
+                                        ...newTask,
+                                        priority: value as 'low' | 'medium' | 'high',
+                                    })}>
                                     <SelectTrigger id="task-priority">
                                         <SelectValue placeholder="Select priority" />
                                     </SelectTrigger>
@@ -167,4 +169,3 @@ export function KanbanColumn({ column, setColumns }: KanbanColumnProps) {
         </Card>
     )
 }
-

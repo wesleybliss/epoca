@@ -80,23 +80,27 @@ export function KanbanTask({ task, setColumns }: KanbanTaskProps) {
                 className="cursor-grab active:cursor-grabbing"
                 onClick={() => setColumns && setIsEditTaskOpen(true)}>
                 <CardContent className="p-3">
-                    <div className="font-medium mb-1">{task.title}</div>
-                    {task.description && <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{task.description}</p>}
+                    <div className="mb-1 font-medium">{task.title}</div>
+                    {task.description && (
+                        <p className="mb-2 text-xs text-muted-foreground line-clamp-2">
+                            {task.description}
+                        </p>
+                    )}
                     <Badge className={priorityColors[task.priority]}>
                         {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
                     </Badge>
                 </CardContent>
                 {(task.startDate || task.dueDate) && (
-                    <CardFooter className="p-3 pt-0 flex gap-2 text-xs text-muted-foreground">
+                    <CardFooter className="flex gap-2 p-3 pt-0 text-xs text-muted-foreground">
                         {task.startDate && (
                             <div className="flex items-center">
-                                <Calendar className="h-3 w-3 mr-1" />
+                                <Calendar className="mr-1 w-3 h-3" />
                                 {new Date(task.startDate).toLocaleDateString()}
                             </div>
                         )}
                         {task.dueDate && (
                             <div className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
+                                <Clock className="mr-1 w-3 h-3" />
                                 {new Date(task.dueDate).toLocaleDateString()}
                             </div>
                         )}
@@ -173,4 +177,3 @@ export function KanbanTask({ task, setColumns }: KanbanTaskProps) {
         </>
     )
 }
-
