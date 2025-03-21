@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <Button variant="ghost" className="justify-start w-full" asChild>
                     <Link href="/">
                         <LayoutDashboard className="mr-2 w-4 h-4" />
-            Board
+                        Board
                     </Link>
                 </Button>
                 
@@ -30,7 +30,7 @@ const Sidebar = () => {
                 <Button variant="ghost" className="justify-start w-full" asChild>
                     <Link href="/settings">
                         <Settings className="mr-2 w-4 h-4" />
-            Settings
+                        Settings
                     </Link>
                 </Button>
             </nav>
@@ -51,7 +51,7 @@ const Sidebar = () => {
                 
                 <Button variant="outline" className="justify-start w-full" size="sm">
                     <LogOut className="mr-2 w-4 h-4" />
-          Sign Out
+                    Sign Out
                 </Button>
             </div>
         </aside>

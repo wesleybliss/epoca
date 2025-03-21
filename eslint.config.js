@@ -27,6 +27,7 @@ export default tseslint.config(
             'build/**',
             'node_modules/**',
             'next.config.mjs',
+            'tsconfig.json',
             'postcss.config.mjs',
             '.next/**',
             'assets/typedefs/**',

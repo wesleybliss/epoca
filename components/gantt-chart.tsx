@@ -28,6 +28,8 @@ const GanttChart = ({ tasks, setTasks }: GanttChartProps) => {
     const [originalStartDate, setOriginalStartDate] = useState<Date | null>(null)
     const [originalEndDate, setOriginalEndDate] = useState<Date | null>(null)
     const [resizeStartX, setResizeStartX] = useState(0)
+    const [handleDragMove, setHandleDragMove] = useState<((e: MouseEvent) => void) | null>(null)
+    const [handleResizeMove, setHandleResizeMove] = useState<((e: MouseEvent) => void) | null>(null)
     const [isDragging, setIsDragging] = useState(false)
     const [isResizing, setIsResizing] = useState(false)
     

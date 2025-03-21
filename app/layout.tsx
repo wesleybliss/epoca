@@ -16,12 +16,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body>
+            <body style={{ isolation: 'isolate' }}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
-                    disableTransitionOnChange>
+                    disableTransitionOnChange
+                    forcedTheme={process.env.NODE_ENV === 'production' ? 'light' : undefined}>
                     <ThemeSync />
                     {children}
                 </ThemeProvider>

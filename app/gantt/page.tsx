@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Sidebar } from '@/components/sidebar'
-import { GanttChart } from '@/components/gantt-chart'
+import Sidebar from '@/components/sidebar'
+import GanttChart from '@/components/gantt-chart'
 import type { Task } from '@/components/kanban-board'
 
 // Sample data for the Gantt chart
@@ -47,10 +47,10 @@ export default function GanttPage() {
     return (
         <div className="flex h-screen bg-background">
             <Sidebar />
-            <main className="flex-1 overflow-auto p-4">
-                <div className="h-full flex flex-col">
-                    <h1 className="text-2xl font-bold mb-6">Gantt Chart</h1>
-                    <div className="flex-1 overflow-x-auto">
+            <main className="overflow-auto flex-1 p-4">
+                <div className="flex flex-col h-full">
+                    <h1 className="mb-6 text-2xl font-bold">Gantt Chart</h1>
+                    <div className="overflow-x-auto flex-1">
                         <GanttChart tasks={tasks} setTasks={setTasks} />
                     </div>
                 </div>
@@ -58,4 +58,3 @@ export default function GanttPage() {
         </div>
     )
 }
-
